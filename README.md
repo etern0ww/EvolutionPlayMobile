@@ -1,46 +1,68 @@
-# EvolutionPlay Mobile
+﻿# EvolutionPlay Mobile
 
-Este é um app mobile para o jogo EvolutionPlay, que conecta a um backend ASP.NET Core rodando no seu PC para armazenar os dados.
+Este é o app mobile do jogo EvolutionPlay, desenvolvido em .NET MAUI para Android, iOS, MacCatalyst e Windows.
 
-## Configuração
+## Visão geral
 
-1. Certifique-se de que o backend ASP.NET Core está rodando no seu PC (porta 5062 por padrão).
+O app oferece:
+- dashboard de progresso do jogador
+- loja com itens e restrições de classe/nível
+- crafting de itens e criação de poções
+- inventário com itens comprados
+- distribuição de pontos de habilidade
+- chatbot integrado para ajudar com mecânicas do jogo
 
-2. Instale as workloads necessárias para .NET MAUI:
+## Recursos principais
+
+- Navegação por abas: Home, Loja, Craft, Poções, Inventário e Chatbot
+- Atributos: Força, Agilidade, Vitalidade, Inteligência, Velocidade e Resistência
+- Regras de compra por nível e por classe
+- Pontos de habilidade liberados ao subir de nível
+- Persistência de estado local no dispositivo
+
+## Requisitos
+
+- .NET 10 SDK
+- Workloads MAUI instaladas:
+  ```powershell
+  dotnet workload install maui-android maui-ios maui-windows
+  ```
+- Android SDK com platform-tools e build-tools
+
+## Build e execução
+
+1. Abra `EvolutionPlayMobile\EvolutionPlayMobile` no Visual Studio ou VS Code.
+2. Restaure pacotes:
+   ```powershell
+   dotnet restore
    ```
-   dotnet workload install maui-android maui-ios maui-windows
+3. Compile para Android:
+   ```powershell
+   dotnet build -f net10.0-android
+   ```
+4. Gere o APK de release:
+   ```powershell
+   dotnet publish -f net10.0-android -c Release -p:AndroidPackageFormat=apk
    ```
 
-3. Instale o Android SDK plataforma 36. Se receber erro de permissão, execute o comando como administrador:
-   ```
-   dotnet build -t:InstallAndroidDependencies -f net10.0-android "-p:AndroidSdkDirectory=C:\\Program Files (x86)\\Android\\android-sdk" "-p:AcceptAndroidSDKLicenses=true"
-   ```
+## Instalação no Android
 
-4. Abra o projeto EvolutionPlayMobile no Visual Studio ou VS Code.
+Após publicar, o APK estará em:
 
-5. Para rodar no emulador Android, mantenha a URL do backend como `http://10.0.2.2:5062`.
+`bin\Release\net10.0-android\com.companyname.evolution-Signed.apk`
 
-6. Para rodar em um telefone físico, conecte o telefone ao PC ou use a mesma rede Wi-Fi e troque a URL do backend para `http://<IP-do-PC>:5062`.
-
-7. Execute o app no emulador ou dispositivo desejado.
-## Backend
-
-O backend é o projeto ASP.NET Core original, modificado para incluir endpoints API.
-
-Para rodar o backend:
+Instale com ADB:
+```powershell
+& 'C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe' install -r com.companyname.evolution-Signed.apk
 ```
-cd EvolutionPlay.App
-dotnet run
-```
 
-O backend estará disponível em http://localhost:5062.
+## Observações
 
-## Funcionalidades
+- O app foi criado para rodar localmente no dispositivo.
+- O estado do jogo é salvo localmente, não exigindo backend externo.
 
-- Dashboard com status do jogador
-- Registrar treinos
-- Economizar dinheiro
-- Registrar compras
-- E mais ações do jogo
+## Repositório GitHub
 
-Os dados são salvos no PC via o backend.
+Este projeto está publicado em:
+
+https://github.com/etern0ww/EvolutionPlayMobile
