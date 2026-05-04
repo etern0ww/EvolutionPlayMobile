@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:EvolutionPlayMobile.Converters"
+             x:Class="EvolutionPlayMobile.MainPage"
+             BackgroundColor="#0A0E27">
+
+    <ContentPage.Resources>
+        <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+        <converters:ProgressToWidthConverter x:Key="ProgressToWidthConverter" />
+        <converters:NumberToBoolConverter x:Key="NumberToBoolConverter" />
+        <Style TargetType="Frame" ApplyToDerivedTypes="True">
+            <Setter Property="HasShadow" Value="False" />
+            <Setter Property="BorderColor" Value="#1E2749" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="50,*,85">
+
+        <!-- Header Minimalista -->
+        <Grid Grid.Row="0" BackgroundColor="#0F1229" Padding="15,8">
+            <Label x:Name="ConnectionStatusLabel" Text="Offline Mode" FontSize="11" TextColor="#6B7391" HorizontalOptions="End" VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Navigation Bar Moderna -->
+        <Grid Grid.Row="2" BackgroundColor="#0F1229" Padding="0">
+            <HorizontalStackLayout Spacing="0" HorizontalOptions="Fill" Padding="0">
+                <Button Text="🏠" BackgroundColor="Transparent" TextColor="#FFD700" FontSize="22" WidthRequest="60" Clicked="OnHomeClicked" CornerRadius="0" BorderWidth="0" />
+                <Button Text="🛒" BackgroundColor="Transparent" TextColor="#A0AEC0" FontSize="22" WidthRequest="60" Clicked="OnShopClicked" CornerRadius="0" BorderWidth="0" />
+                <Button Text="⚒️" BackgroundColor="Transparent" TextColor="#A0AEC0" FontSize="22" WidthRequest="60" Clicked="OnCraftClicked" CornerRadius="0" BorderWidth="0" />
+                <Button Text="🧪" BackgroundColor="Transparent" TextColor="#A0AEC0" FontSize="22" WidthRequest="60" Clicked="OnPotionsClicked" CornerRadius="0" BorderWidth="0" />
+                <Button Text="🎒" BackgroundColor="Transparent" TextColor="#A0AEC0" FontSize="22" WidthRequest="60" Clicked="OnInventoryClicked" CornerRadius="0" BorderWidth="0" />
+                <Button Text="🤖" BackgroundColor="Transparent" TextColor="#A0AEC0" FontSize="22" WidthRequest="60" Clicked="OnChatbotClicked" CornerRadius="0" BorderWidth="0" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Main Content Area -->
+        <ScrollView Grid.Row="1" Padding="12,15" BackgroundColor="#0A0E27">
+            <VerticalStackLayout x:Name="MainContent" Spacing="20">
+
+                <!-- ===== HOME SECTION ===== -->
+                <VerticalStackLayout x:Name="HomeSection" IsVisible="True" Spacing="16">
+
+                    <!-- Profile Card - Redesigned -->
+                    <Frame Padding="16" CornerRadius="12" BackgroundColor="#141829" BorderColor="#1E2749" Margin="0">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding State.Profile.Name, StringFormat='👤 {0}'}" FontSize="20" FontAttributes="Bold" TextColor="#E2E8F0" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                <StackLayout Spacing="4">
+                                    <Label Text="Nível" FontSize="11" TextColor="#718096" />
+                                    <Label Text="{Binding State.Profile.Level, StringFormat='{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#FFD700" />
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="Rank" FontSize="11" TextColor="#718096" />
+                                    <Label Text="{Binding State.Profile.Rank}" FontSize="16" FontAttributes="Bold" TextColor="#FFD700" />
+                                </StackLayout>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="0,10,0,0">
+                                <Label Text="Classe" FontSize="11" TextColor="#718096" />
+                                <Label Grid.Column="1" Text="{Binding State.Profile.Class}" FontSize="11" TextColor="#A0AEC0" HorizontalOptions="End" />
+                                <Label Grid.Row="1" Text="{Binding XpDisplay, StringFormat='XP {0}'}" FontSize="11" TextColor="#86EFAC" />
+                                <Frame Grid.Row="1" Grid.Column="1" HeightRequest="14" BackgroundColor="#1A2332" CornerRadius="8" Padding="0" HorizontalOptions="Fill" VerticalOptions="Center" WidthRequest="260">
+                                    <BoxView BackgroundColor="#38B2DE" HeightRequest="14" WidthRequest="{Binding XpProgress, Converter={StaticResource ProgressToWidthConverter}, ConverterParameter=260}" AnchorX="0" HorizontalOptions="Start" Rotation="-6" />
+                                </Frame>
+                            </Grid>
+                            <BoxView HeightRequest="0.5" BackgroundColor="#1E2749" Margin="0,4,0,4" />
+                            <Label Text="{Binding State.Profile.DayStreak, StringFormat='🔥 Streak: {0} dias'}" TextColor="#FC8181" FontSize="13" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Resources Overview -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <!-- Gold Card -->
+                        <Frame Grid.Column="0" Padding="14" CornerRadius="12" BackgroundColor="#1A2332" BorderColor="#2D5A8C">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Ouro" FontSize="11" TextColor="#90CDF4" />
+                                <Label Text="{Binding State.Resources.Gold, StringFormat='{0}'}" FontSize="18" FontAttributes="Bold" TextColor="#FFD700" />
+                            </VerticalStackLayout>
+                        </Frame>
+                        <!-- Skill Points Card -->
+                        <Frame Grid.Column="1" Padding="14" CornerRadius="12" BackgroundColor="#1A2D2A" BorderColor="#38B26D">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Pontos" FontSize="11" TextColor="#86EFAC" />
+                                <Label Text="{Binding State.Resources.SkillPoints, StringFormat='{0}'}" FontSize="18" FontAttributes="Bold" TextColor="#86EFAC" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+
+                    <!-- Attributes Grid -->
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#141829" BorderColor="#1E2749">
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*" ColumnSpacing="10" RowSpacing="10">
+                            <StackLayout Spacing="3">
+                                <Label Text="Força" FontSize="10" TextColor="#718096" />
+                                <Label Text="{Binding State.Attributes.Strength, StringFormat='{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#F687B3" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" Spacing="3">
+                                <Label Text="Agilidade" FontSize="10" TextColor="#718096" />
+                                <Label Text="{Binding State.Attributes.Agility, StringFormat='{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#FBD38D" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="1" Spacing="3">
+                                <Label Text="Vitalidade" FontSize="10" TextColor="#718096" />
+                                <Label Text="{Binding State.Attributes.Vitality, StringFormat='{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#FC8181" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="1" Grid.Column="1" Spacing="3">
+                                <Label Text="Inteligência" FontSize="10" TextColor="#718096" />
+                                <Label Text="{Binding State.Attributes.Intelligence, StringFormat='{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#9F7AEA" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="2" Spacing="3">
+                                <Label Text="Velocidade" FontSize="10" TextColor="#718096" />
+                                <Label Text="{Binding State.Attributes.Speed, StringFormat='{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#F6E05E" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="2" Grid.Column="1" Spacing="3">
+                                <Label Text="Resistência" FontSize="10" TextColor="#718096" />
+                                <Label Text="{Binding State.Attributes.Resistance, StringFormat='{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#F56565" />
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <!-- Skill Point Allocation -->
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#141829" BorderColor="#1E2749" IsVisible="{Binding State.Resources.SkillPoints, Converter={StaticResource NumberToBoolConverter}}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Distribuir Pontos de Habilidade" FontSize="13" FontAttributes="Bold" TextColor="#E2E8F0" />
+                            <Label Text="Você tem pontos para distribuir nos atributos." FontSize="11" TextColor="#A0AEC0" />
+                            <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*" ColumnSpacing="10" RowSpacing="10">
+                                <Button Text="Força +1" Clicked="OnAllocateStrengthClicked" BackgroundColor="#F687B3" TextColor="#FFFFFF" CornerRadius="6" FontSize="11" HeightRequest="32" />
+                                <Button Grid.Column="1" Text="Agilidade +1" Clicked="OnAllocateAgilityClicked" BackgroundColor="#FBD38D" TextColor="#000000" CornerRadius="6" FontSize="11" HeightRequest="32" />
+                                <Button Grid.Row="1" Text="Vitalidade +1" Clicked="OnAllocateVitalityClicked" BackgroundColor="#FC8181" TextColor="#FFFFFF" CornerRadius="6" FontSize="11" HeightRequest="32" />
+                                <Button Grid.Row="1" Grid.Column="1" Text="Inteligência +1" Clicked="OnAllocateIntelligenceClicked" BackgroundColor="#9F7AEA" TextColor="#FFFFFF" CornerRadius="6" FontSize="11" HeightRequest="32" />
+                                <Button Grid.Row="2" Text="Velocidade +1" Clicked="OnAllocateSpeedClicked" BackgroundColor="#F6E05E" TextColor="#000000" CornerRadius="6" FontSize="11" HeightRequest="32" />
+                                <Button Grid.Row="2" Grid.Column="1" Text="Resistência +1" Clicked="OnAllocateResistanceClicked" BackgroundColor="#F56565" TextColor="#FFFFFF" CornerRadius="6" FontSize="11" HeightRequest="32" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Quick Actions -->
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#141829" BorderColor="#1E2749">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Ações Rápidas" FontSize="13" FontAttributes="Bold" TextColor="#E2E8F0" />
+                            <Label Text="Você pode usar apenas uma ação rápida por dia e economizar até 3 vezes." FontSize="11" TextColor="#A0AEC0" />
+                            <Label Text="{Binding State.DailyQuickActions, StringFormat='Ações rápidas hoje: {0}/1'}" FontSize="11" TextColor="#F6E05E" />
+                            <Label Text="{Binding State.DailySaveActions, StringFormat='Economias hoje: {0}/3'}" FontSize="11" TextColor="#F6E05E" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" RowSpacing="10">
+                                <Button Text="🏃 Leve" Clicked="OnWorkoutLightClicked" BackgroundColor="#1A4D2E" TextColor="#86EFAC" CornerRadius="8" FontSize="12" Padding="8" />
+                                <Button Grid.Column="1" Text="🏃 Médio" Clicked="OnWorkoutMediumClicked" BackgroundColor="#1F3A7E" TextColor="#93BBFF" CornerRadius="8" FontSize="12" Padding="8" />
+                                <Button Grid.Row="1" Text="🏃 Pesado" Clicked="OnWorkoutHeavyClicked" BackgroundColor="#5A3A1A" TextColor="#FFCC99" CornerRadius="8" FontSize="12" Padding="8" />
+                                <Button Grid.Row="1" Grid.Column="1" Text="💰 Economizar" Clicked="OnSaveMoneyClicked" BackgroundColor="#3D1A3D" TextColor="#E9D8FD" CornerRadius="8" FontSize="12" Padding="8" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Status Messages -->
+                    <Label Text="{Binding Message}" TextColor="#86EFAC" FontSize="13" IsVisible="{Binding Message, Converter={StaticResource StringToBoolConverter}}" Padding="8" />
+                    <Label Text="{Binding Error}" TextColor="#FC8181" FontSize="13" IsVisible="{Binding Error, Converter={StaticResource StringToBoolConverter}}" Padding="8" />
+
+                </VerticalStackLayout>
+
+                <!-- ===== SHOP SECTION ===== -->
+                <VerticalStackLayout x:Name="ShopSection" IsVisible="False" Spacing="12">
+                    
+                    <!-- Shop Header com Ouro -->
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#1A2332" BorderColor="#2D5A8C">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Loja de Itens" FontSize="18" FontAttributes="Bold" TextColor="#E2E8F0" VerticalOptions="Center" />
+                            <StackLayout Grid.Column="1" Padding="8,4">
+                                <Label Text="{Binding State.Resources.Gold, StringFormat='💰 {0}'}" FontSize="14" FontAttributes="Bold" TextColor="#FFD700" />
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <!-- Shop Items - Simple Vertical List -->
+                    <CollectionView ItemsSource="{Binding ShopItems}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="12" CornerRadius="10" BackgroundColor="#141829" BorderColor="#1E2749" HasShadow="False" Margin="0,0,0,10">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="#E2E8F0" FontSize="13" LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding Category}" TextColor="#A0AEC0" FontSize="10" />
+                                        <Label Text="{Binding Price, StringFormat='💰 {0}'}" TextColor="#FFD700" FontSize="13" FontAttributes="Bold" />
+                                        <Label Text="{Binding RequirementText}" TextColor="#F6E05E" FontSize="10" IsVisible="{Binding RequirementText, Converter={StaticResource StringToBoolConverter}}" />
+                                        <Button Text="Comprar" Clicked="OnBuyItemClicked" BackgroundColor="#2D5A8C" TextColor="#90CDF4" CornerRadius="6" FontSize="11" HeightRequest="32" Padding="6" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+
+                <!-- ===== CRAFT SECTION ===== -->
+                <VerticalStackLayout x:Name="CraftSection" IsVisible="False" Spacing="12">
+                    
+                    <!-- Craft Header com Ouro -->
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#1A2332" BorderColor="#38B26D">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Criação de Itens" FontSize="18" FontAttributes="Bold" TextColor="#E2E8F0" VerticalOptions="Center" />
+                            <StackLayout Grid.Column="1" Padding="8,4">
+                                <Label Text="{Binding State.Resources.Gold, StringFormat='💰 {0}'}" FontSize="14" FontAttributes="Bold" TextColor="#FFD700" />
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <!-- Craft Recipes - Simple Vertical List -->
+                    <CollectionView ItemsSource="{Binding CraftRecipes}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="12" CornerRadius="10" BackgroundColor="#141829" BorderColor="#1E2749" HasShadow="False" Margin="0,0,0,10">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="#E2E8F0" FontSize="13" LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding Category}" TextColor="#A0AEC0" FontSize="10" />
+                                        <Label Text="{Binding Effect}" TextColor="#CBD5E0" FontSize="11" LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding GoldCost, StringFormat='⚙️ {0} ouro'}" TextColor="#FFD700" FontSize="12" FontAttributes="Bold" />
+                                        <Button Text="Craftar" Clicked="OnCraftItemClicked" BackgroundColor="#38B26D" TextColor="#86EFAC" CornerRadius="6" FontSize="11" HeightRequest="32" Padding="6" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+
+                <!-- ===== POTIONS SECTION ===== -->
+                <VerticalStackLayout x:Name="PotionsSection" IsVisible="False" Spacing="12">
+                    
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#1A1A2E" BorderColor="#9F7AEA">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Lab. de Poções" FontSize="18" FontAttributes="Bold" TextColor="#E2E8F0" VerticalOptions="Center" />
+                            <StackLayout Grid.Column="1" Padding="8,4">
+                                <Label Text="{Binding State.Resources.Gold, StringFormat='💰 {0}'}" FontSize="14" FontAttributes="Bold" TextColor="#FFD700" />
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <CollectionView ItemsSource="{Binding Potions}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="12" CornerRadius="10" BackgroundColor="#141829" BorderColor="#1E2749" HasShadow="False" Margin="0,0,0,10">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="#E2E8F0" FontSize="13" LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding Effect}" TextColor="#CBD5E0" FontSize="11" LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding GoldCost, StringFormat='⚙️ {0} ouro'}" TextColor="#FFD700" FontSize="12" FontAttributes="Bold" />
+                                        <Button Text="Criar" Clicked="OnCreatePotionClicked" BackgroundColor="#3D1A3D" TextColor="#E9D8FD" CornerRadius="6" FontSize="11" HeightRequest="32" Padding="6" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+
+                <!-- ===== INVENTORY SECTION ===== -->
+                <VerticalStackLayout x:Name="InventorySection" IsVisible="False" Spacing="12">
+                    
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#141829" BorderColor="#1E2749">
+                        <Label Text="Seu Inventário" FontSize="18" FontAttributes="Bold" TextColor="#E2E8F0" />
+                    </Frame>
+                    
+                    <CollectionView ItemsSource="{Binding OwnedShopItems}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="12" CornerRadius="10" BackgroundColor="#141829" BorderColor="#1E2749" HasShadow="False" Margin="0,0,0,10">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="#E2E8F0" FontSize="13" />
+                                        <Label Text="{Binding Category}" TextColor="#A0AEC0" FontSize="10" />
+                                        <Label Text="{Binding Description}" TextColor="#CBD5E0" FontSize="11" LineBreakMode="WordWrap" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    
+                    <Label Text="Nenhum item ainda..." TextColor="#718096" HorizontalOptions="Center" FontSize="14" IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding OwnedShopItems.Count}" Value="0">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </VerticalStackLayout>
+
+                <!-- ===== CHATBOT SECTION ===== -->
+                <VerticalStackLayout x:Name="ChatbotSection" IsVisible="False" Spacing="12">
+                    
+                    <Frame Padding="14" CornerRadius="12" BackgroundColor="#141829" BorderColor="#1E2749">
+                        <Label Text="Assistente de Evolução" FontSize="18" FontAttributes="Bold" TextColor="#E2E8F0" />
+                    </Frame>
+
+                    <!-- Chat Messages -->
+                    <ScrollView HeightRequest="300" BackgroundColor="#0A0E27">
+                        <VerticalStackLayout x:Name="ChatMessages" Spacing="8" Padding="8" />
+                    </ScrollView>
+
+                    <!-- Chat Input -->
+                    <Frame Padding="12" CornerRadius="10" BackgroundColor="#141829" BorderColor="#1E2749">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Entry x:Name="ChatInput" Placeholder="Digite sua mensagem..." TextColor="#E2E8F0" BackgroundColor="Transparent" PlaceholderColor="#718096" />
+                            <Button Grid.Column="1" Text="📤" Clicked="OnSendMessageClicked" BackgroundColor="#2D5A8C" TextColor="#90CDF4" CornerRadius="6" WidthRequest="50" />
+                        </Grid>
+                    </Frame>
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

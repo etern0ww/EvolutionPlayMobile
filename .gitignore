@@ -1,0 +1,59 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Rider
+.idea/
+*.sln.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Android
+*.apk
+*.apks
+*.aab
+*.keystore
+
+# MAUI / .NET
+**/obj/
+**/bin/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Publish output
+publish/
+
+# JetBrains Rider
+.idea/
+
+# User-specific files
+*.swp
+*.swo
+*.kate-swp
+*.bak
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
